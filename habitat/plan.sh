@@ -1,4 +1,4 @@
-pkg_origin=smartb-energy
+pkg_origin=smartb
 pkg_name=circonus-agent
 pkg_maintainer="Blake Irvin <blake.irvin@gmail.com>"
 pkg_license=("BSD-3")
