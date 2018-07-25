@@ -1,6 +1,6 @@
 pkg_origin=smartb
 pkg_name=circonus-agent
-pkg_maintainer="Blake Irvin <blake.irvin@gmail.com>"
+pkg_maintainer="smartB Engineering <dev@smartb.eu>"
 pkg_license=("BSD-3")
 pkg_deps=(
   core/cacerts
