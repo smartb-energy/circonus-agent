@@ -8,6 +8,7 @@ pkg_deps=(
   core/grep
   core/runit
   core/sed
+  core/python
 )
 pkg_build_deps=(
   core/go
