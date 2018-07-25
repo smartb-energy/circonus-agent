@@ -9,15 +9,14 @@ echo ""
 
 rebuild() {
     source ./habitat/plan.sh
-
-    hab stop ${pkg_origin}/${pkg_name} || true
+    hab svc unload ${pkg_origin}/${pkg_name} || true
     build
     source ./results/last_build.env
-    hab install ./results/${pkg_artifact}
-    hab start ${pkg_ident}
-
+    hab svc load ${pkg_ident}
     touch ./habitat/studio.toml
-    hab config apply ${pkg_name}.default $(date +%s) ./habitat/studio.toml
-
+    if ls ./habitat/studio.toml > /dev/null
+    then
+      hab config apply ${pkg_name}.default $(date +%s) ./habitat/studio.toml
+    fi
     echo "Type \`sup-log\` to see Supervisor output and service status"
 }
