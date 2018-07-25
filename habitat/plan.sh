@@ -58,16 +58,18 @@ do_build() {
   return $?
 }
 
-do_install() {
-  cp -r "${GOPATH}/bin"                "${pkg_prefix}/"
-  cp -r "$PLAN_CONTEXT/../plugins"     "${pkg_prefix}/plugins"
-  mv "${pkg_prefix}/plugins/README.md" "${pkg_prefix}/README.md"
-
-  # replace interpreters in our scripts with interpreters from `core` plans
-  for plugin in $(find ${pkg_prefix}/plugins/ -maxdepth 1 -type f -perm 755)
+do_replace_interpreters() {
+  for plugin in $(find $1 -maxdepth 1 -type f -perm 755)
   do
     lang=$(grep '#!' ${plugin} | awk 'BEGIN{FS="/"}{print $NF}')
     fix_interpreter ${plugin} core/${lang} bin/${lang}
   done
+}
+
+do_install() {
+  cp -r "${GOPATH}/bin"                "${pkg_prefix}/"
+  cp -r "$PLAN_CONTEXT/../plugins"     "${pkg_prefix}/plugins"
+  mv "${pkg_prefix}/plugins/README.md" "${pkg_prefix}/README.md"
+  do_replace_interpreters ${pkg_prefix}/plugins/
   return $?
 }
