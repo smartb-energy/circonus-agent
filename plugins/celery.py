@@ -1,4 +1,4 @@
-#!{{pkgPathFor "core/python"}}/bin/python
+#!/bin/python
 
 import urllib.request
 import json

@@ -3,12 +3,14 @@ pkg_name=circonus-agent
 pkg_maintainer="smartB Engineering <dev@smartb.eu>"
 pkg_license=("BSD-3")
 pkg_deps=(
+  core/bash
   core/cacerts
   core/coreutils
   core/grep
   core/runit
   core/sed
   core/python
+  core/findutils
 )
 pkg_build_deps=(
   core/go
@@ -60,5 +62,12 @@ do_install() {
   cp -r "${GOPATH}/bin"                "${pkg_prefix}/"
   cp -r "$PLAN_CONTEXT/../plugins"     "${pkg_prefix}/plugins"
   mv "${pkg_prefix}/plugins/README.md" "${pkg_prefix}/README.md"
+
+  # replace interpreters in our scripts with interpreters from `core` plans
+  for plugin in $(find ${pkg_prefix}/plugins/ -maxdepth 1 -type f -perm 755)
+  do
+    lang=$(grep '#!' ${plugin} | awk 'BEGIN{FS="/"}{print $NF}')
+    fix_interpreter ${plugin} core/${lang} bin/${lang}
+  done
   return $?
 }
